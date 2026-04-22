@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spice Heritage | The Ultimate South Indian Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- HIGH LEVEL CSS VARIABLES --- */
+        :root {
+            --primary: #a83232;
+            --secondary: #d4af37;
+            --dark: #2c3e50;
+            --light: #fffbf2;
+            --success: #27ae60;
+            --shadow: 0 10px 30px rgba(0,0,0,0.15);
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body { font-family: 'Lato', sans-serif; margin: 0; background: var(--light); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; }
+        
+        /* --- TOP HEADER (Contact) --- */
+        .top-bar {
+            background: #222;
+            color: #ccc;
+            padding: 8px 5%;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Poppins', sans-serif;
+        }
+        .top-bar span { display: flex; align-items: center; gap: 8px; }
+
+        /* --- NAVIGATION --- */
+        nav { 
+            background: var(--primary); 
+            padding: 0 5%; 
+            height: 70px;
+            position: sticky; 
+            top: 0; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            z-index: 1000; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+        }
+        .logo { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 28px; 
+            color: var(--secondary); 
+            font-weight: bold; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+        
+        .nav-links { display: flex; height: 100%; align-items: center; }
+        
+        .nav-btn { 
+            background: none; 
+            border: none; 
+            color: white; 
+            font-size: 16px; 
+            margin-left: 25px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            height: 100%;
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+            transition: color 0.3s;
+        }
+        .nav-btn:hover { color: var(--secondary); }
+
+        /* --- DROPDOWN MENU --- */
+        .dropdown { position: relative; height: 100%; display: flex; align-items: center; }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            background-color: white;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1001;
+            border-top: 4px solid var(--secondary);
+            border-radius: 0 0 5px 5px;
+        }
+        .dropdown:hover .dropdown-content { display: block; }
+        
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+        .dropdown-content a:hover { background-color: #f9f9f9; color: var(--primary); padding-left: 20px; }
+
+        /* --- PAGE LAYOUT --- */
+        .page { display: none; padding: 40px 5%; max-width: 1400px; margin: 0 auto; }
+        .active { display: block; }
+
+        /* --- HERO SECTION --- */
+        #home { padding: 0; max-width: 100%; }
+        .hero-section {
+            height: 90vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1514326640560-7d063ef2aed5?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            color: var(--secondary);
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .hero-btn {
+            margin-top: 40px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background: var(--secondary);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+        .hero-btn:hover { background: #fff; transform: scale(1.05); }
+
+        /* --- MENU CATEGORIES --- */
+        .category-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+            scroll-margin-top: 100px;
+        }
+
+        /* --- CARD GRID --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        
+        .card { 
+            background: white; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); 
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+        .card img { width: 100%; height: 200px; object-fit: cover; transition: transform 0.5s; }
+        .card:hover img { transform: scale(1.05); }
+        
+        .info { padding: 20px; }
+        .info h3 { margin: 0; color: #444; font-family: 'Playfair Display'; font-size: 1.3rem; }
+        .price { color: var(--primary); font-weight: bold; font-size: 1.2rem; display: block; margin: 8px 0; }
+        
+        details { margin-top: 10px; color: #666; font-size: 0.9rem; cursor: pointer; }
+        summary { outline: none; list-style: none; color: #888; font-size: 0.8rem; text-transform: uppercase; font-weight: bold; }
+        
+        .btn-add { 
+            width: 100%; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            margin-top: 15px; 
+            cursor: pointer; 
+            transition: background 0.2s;
+        }
+        .btn-add:hover { background: #802020; }
+
+        /* --- CART & TIP SECTION --- */
+        .cart-container { display: flex; gap: 30px; flex-wrap: wrap; }
+        .cart-list { flex: 2; background: white; padding: 30px; border-radius: 15px; box-shadow: var(--shadow); }
+        .cart-summary { flex: 1; background: #fff; padding: 30px; border-radius: 15px; box-shadow: var(--shadow); height: fit-content; position: sticky; top: 100px; }
+        
+        .cart-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px dashed #ddd; align-items: center; }
+        .remove-btn { color: #e74c3c; cursor: pointer; background: #fee; padding: 5px 10px; border-radius: 50%; font-weight: bold; }
+
+        .tip-section { margin: 20px 0; }
+        .tip-options { display: flex; gap: 10px; margin-top: 10px; }
+        .tip-btn { 
+            flex: 1; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            background: #f9f9f9; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            transition: all 0.2s; 
+        }
+        .tip-btn.selected { background: var(--secondary); color: white; border-color: var(--secondary); font-weight: bold; transform: scale(1.05); }
+
+        /* --- FORMS (Address & Payment) --- */
+        .form-box { 
+            max-width: 500px; 
+            margin: 0 auto; 
+            background: var(--glass); 
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: var(--shadow); 
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        input { 
+            width: 100%; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            background: #fdfdfd; 
+            font-size: 1rem; 
+            transition: border 0.3s; 
+        }
+        input:focus { border-color: var(--secondary); outline: none; box-shadow: 0 0 5px rgba(212, 175, 55, 0.3); }
+
+        /* --- BIG BUTTONS --- */
+        .btn-big {
+            width: 100%;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-big:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(39, 174, 96, 0.4); }
+
+        /* --- PAYMENT SELECTION --- */
+        .payment-option {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #eee;
+            margin-bottom: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        .payment-option:hover { border-color: var(--secondary); background: #fffcf5; }
+        .payment-option input { width: auto; margin: 0 15px 0 0; }
+        .payment-label { font-size: 1.1rem; font-weight: bold; color: #555; }
+
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <span>📞 +91 98765 43210</span>
+        <span>✉️ orders@spiceheritage.com</span>
+    </div>
+
+    <nav>
+        <div class="logo" onclick="show('home')">🌿 Spice Heritage</div>
+        <div class="nav-links">
+            <button class="nav-btn" onclick="show('home')">Home</button>
+            
+            <div class="dropdown">
+                <button class="nav-btn" onclick="show('menu')">Menu ▼</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="showMenuSection('cat-starters')">Starters & Snacks</a>
+                    <a href="#" onclick="showMenuSection('cat-tiffins')">Tiffins (Idli/Dosa)</a>
+                    <a href="#" onclick="showMenuSection('cat-breads')">Breads & Curries</a>
+                    <a href="#" onclick="showMenuSection('cat-rice')">Rice Specials</a>
+                    <a href="#" onclick="showMenuSection('cat-desserts')">Desserts & Drinks</a>
+                </div>
+            </div>
+
+            <button class="nav-btn" onclick="show('cart')">Cart (<span id="count">0</span>)</button>
+        </div>
+    </nav>
+
+    <div id="home" class="page active">
+        <div class="hero-section">
+            <h1 class="hero-title">Royal Dravidian Cuisine</h1>
+            <p class="hero-subtitle">Authentic flavors from the Temple Kitchens</p>
+            <button class="hero-btn" onclick="show('menu')">Explore The Menu</button>
+        </div>
+        
+        <div style="background: white; padding: 80px 10%; text-align: center;">
+            <h2 style="font-family: 'Playfair Display'; color: var(--primary); font-size: 2.5rem;">Our Heritage</h2>
+            <p style="max-width: 800px; margin: 20px auto; font-size: 1.1rem; line-height: 1.8; color: #555;">
+                Spice Heritage is a vibrant tribute to the soul-stirring flavors of Southern India. From the aroma of toasted mustard seeds to the depth of Chettinad spices, every dish balances bold heat with refined technique. We honor the diverse culinary map of the South, offering a fiery, flavorful journey that stays true to its name.
+            </p>
+        </div>
+
+        <div style="background: var(--light); padding: 60px 10%; text-align: center; border-top: 1px solid #eee;">
+            <h2 style="font-family: 'Playfair Display'; color: var(--primary); font-size: 2.5rem;">Awards & Recognition</h2>
+            <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 40px;">
+                <div style="background: white; padding: 30px 20px; border-radius: 10px; box-shadow: var(--shadow); width: 250px; border-bottom: 4px solid var(--secondary);">
+                    <div style="font-size: 2.5rem; margin-bottom: 15px;">🏆</div>
+                    <h3 style="color: var(--dark); font-size: 1.3rem; margin-bottom: 10px;">Best South Indian</h3>
+                    <p style="color: #666; font-size: 0.95rem;">Culinary Excellence Awards 2024</p>
+                </div>
+                <div style="background: white; padding: 30px 20px; border-radius: 10px; box-shadow: var(--shadow); width: 250px; border-bottom: 4px solid var(--secondary);">
+                    <div style="font-size: 2.5rem; margin-bottom: 15px;">⭐</div>
+                    <h3 style="color: var(--dark); font-size: 1.3rem; margin-bottom: 10px;">5-Star Hygiene Rating</h3>
+                    <p style="color: #666; font-size: 0.95rem;">Food Safety Authority 2025</p>
+                </div>
+                <div style="background: white; padding: 30px 20px; border-radius: 10px; box-shadow: var(--shadow); width: 250px; border-bottom: 4px solid var(--secondary);">
+                    <div style="font-size: 2.5rem; margin-bottom: 15px;">🍽️</div>
+                    <h3 style="color: var(--dark); font-size: 1.3rem; margin-bottom: 10px;">Top 10 Diners</h3>
+                    <p style="color: #666; font-size: 0.95rem;">City Food Guide Magazine</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="menu" class="page">
+        
+        <h2 id="cat-starters" class="category-title">Starters & Snacks</h2>
+        <div class="grid">
+            <div class="card"><img src="C:\Users\DELL\Pictures\Onion Pakoda.webp" alt="Pakoda"><div class="info"><h3>Onion Pakoda</h3><span class="price">₹70</span><button class="btn-add" onclick="add('Onion Pakoda', 70)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\menduvada.webp" alt="Vada"><div class="info"><h3>Medu Vada</h3><span class="price">₹95</span><button class="btn-add" onclick="add('Medu Vada', 95)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Mini Samosas.webp" alt="Samosa"><div class="info"><h3>Mini Samosas</h3><span class="price">₹60</span><button class="btn-add" onclick="add('Mini Samosas', 60)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Gobi 65.webp" alt="Gobi 65"><div class="info"><h3>Gobi 65</h3><span class="price">₹140</span><button class="btn-add" onclick="add('Gobi 65', 140)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Chicken 65.webp" alt="Chicken 65"><div class="info"><h3>Chicken 65</h3><span class="price">₹220</span><button class="btn-add" onclick="add('Chicken 65', 220)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Paneer Fry.webp" alt="Paneer Tikka"><div class="info"><h3>Paneer Fry</h3><span class="price">₹180</span><button class="btn-add" onclick="add('Paneer Fry', 180)">Add</button></div></div>
+        </div>
+
+        <h2 id="cat-tiffins" class="category-title">Tiffins (Idli & Dosa)</h2>
+        <div class="grid">
+            <div class="card"><img src="C:\Users\DELL\Pictures\Idli Sambar.webp" alt="Idli"><div class="info"><h3>Idli Sambar</h3><span class="price">₹80</span><button class="btn-add" onclick="add('Idli Sambar', 80)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\dosa1.webp" alt="Dosa"><div class="info"><h3>Masala Dosa</h3><span class="price">₹140</span><button class="btn-add" onclick="add('Masala Dosa', 140)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\onion uttapam.webp" alt="Uttapam"><div class="info"><h3>Onion Uttapam</h3><span class="price">₹130</span><button class="btn-add" onclick="add('Onion Uttapam', 130)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\ghee pongal.webp" alt="Pongal"><div class="info"><h3>Ghee Pongal</h3><span class="price">₹110</span><button class="btn-add" onclick="add('Ghee Pongal', 110)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Pesarattu.webp" alt="Pesarattu"><div class="info"><h3>Pesarattu</h3><span class="price">₹130</span><button class="btn-add" onclick="add('Pesarattu', 130)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Appam & Stew.webp" alt="Appam"><div class="info"><h3>Appam & Stew</h3><span class="price">₹180</span><button class="btn-add" onclick="add('Appam & Stew', 180)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Rava Dosa.webp" alt="Rava Dosa"><div class="info"><h3>Rava Dosa</h3><span class="price">₹150</span><button class="btn-add" onclick="add('Rava Dosa', 150)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Set Dosa.webp" alt="Set Dosa"><div class="info"><h3>Set Dosa</h3><span class="price">₹120</span><button class="btn-add" onclick="add('Set Dosa', 120)">Add</button></div></div>
+        </div>
+
+        <h2 id="cat-breads" class="category-title">Breads & Curries</h2>
+        <div class="grid">
+            <div class="card"><img src="C:\Users\DELL\Pictures\Kerala Parotta.webp" alt="Parotta"><div class="info"><h3>Kerala Parotta</h3><span class="price">₹60</span><button class="btn-add" onclick="add('Kerala Parotta', 60)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Chettinad Curry.webp" alt="Chettinad"><div class="info"><h3>Chettinad Curry</h3><span class="price">₹200</span><button class="btn-add" onclick="add('Chettinad Curry', 200)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Veg Kurma.webp" alt="Veg Kurma"><div class="info"><h3>Veg Kurma</h3><span class="price">₹180</span><button class="btn-add" onclick="add('Veg Kurma', 180)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Malabar Fish Curry.webp" alt="Malabar Fish"><div class="info"><h3>Malabar Fish Curry</h3><span class="price">₹280</span><button class="btn-add" onclick="add('Malabar Fish Curry', 280)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Paneer Butter Masala.webp" alt="Paneer Butter"><div class="info"><h3>Paneer Butter Masala</h3><span class="price">₹240</span><button class="btn-add" onclick="add('Paneer Butter Masala', 240)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Phulka (2 pcs).webp" alt="Chapati"><div class="info"><h3>Phulka (2 pcs)</h3><span class="price">₹40</span><button class="btn-add" onclick="add('Phulka', 40)">Add</button></div></div>
+        </div>
+
+        <h2 id="cat-rice" class="category-title">Rice Specials</h2>
+        <div class="grid">
+            <div class="card"><img src="C:\Users\DELL\Pictures\biryani.webp" alt="Biryani"><div class="info"><h3>Veg Biryani</h3><span class="price">₹250</span><button class="btn-add" onclick="add('Veg Biryani', 250)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Chicken Biryani.webp" alt="Chicken Biryani"><div class="info"><h3>Chicken Biryani</h3><span class="price">₹320</span><button class="btn-add" onclick="add('Chicken Biryani', 320)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\thali.webp" alt="Meals"><div class="info"><h3>Full Meals</h3><span class="price">₹220</span><button class="btn-add" onclick="add('Full Meals', 220)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\lemon rice.webp" alt="Lemon"><div class="info"><h3>Lemon Rice</h3><span class="price">₹100</span><button class="btn-add" onclick="add('Lemon Rice', 100)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\curd rice.webp" alt="Curd"><div class="info"><h3>Curd Rice</h3><span class="price">₹90</span><button class="btn-add" onclick="add('Curd Rice', 90)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\sambhar rice.webp" alt="Bisibelebath"><div class="info"><h3>Bisibelebath</h3><span class="price">₹160</span><button class="btn-add" onclick="add('Bisibelebath', 160)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Pulihora.webp" alt="Tamarind"><div class="info"><h3>Tamarind Rice</h3><span class="price">₹120</span><button class="btn-add" onclick="add('Tamarind Rice', 120)">Add</button></div></div>
+        </div>
+
+        <h2 id="cat-desserts" class="category-title">Desserts & Drinks</h2>
+        <div class="grid">
+            <div class="card"><img src="C:\Users\DELL\Pictures\filter coffee.webp" alt="Coffee"><div class="info"><h3>Filter Coffee</h3><span class="price">₹50</span><button class="btn-add" onclick="add('Filter Coffee', 50)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Rose Milk.webp" alt="Rose Milk"><div class="info"><h3>Rose Milk</h3><span class="price">₹60</span><button class="btn-add" onclick="add('Rose Milk', 60)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Payasam.webp" alt="Payasam"><div class="info"><h3>Payasam</h3><span class="price">₹90</span><button class="btn-add" onclick="add('Payasam', 90)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Mysore Pak.webp" alt="Mysore Pak"><div class="info"><h3>Mysore Pak</h3><span class="price">₹100</span><button class="btn-add" onclick="add('Mysore Pak', 100)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Madurai Jigarthanda.webp" alt="Jigarthanda"><div class="info"><h3>Madurai Jigarthanda</h3><span class="price">₹120</span><button class="btn-add" onclick="add('Madurai Jigarthanda', 120)">Add</button></div></div>
+            <div class="card"><img src="C:\Users\DELL\Pictures\Gulab Jamun (2).webp" alt="Gulab Jamun"><div class="info"><h3>Gulab Jamun (2)</h3><span class="price">₹80</span><button class="btn-add" onclick="add('Gulab Jamun', 80)">Add</button></div></div>
+        </div>
+    </div>
+
+    <div id="cart" class="page">
+        <h2 style="color: var(--primary);">Your Banana Leaf Order</h2>
+        <div class="cart-container">
+            <div class="cart-list" id="cartList">
+                <p>Your plate is empty.</p>
+            </div>
+            
+            <div class="cart-summary">
+                <h3 style="margin-top:0;">Order Summary</h3>
+                <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                    <span>Subtotal</span>
+                    <span id="subtotal-display">₹0</span>
+                </div>
+                
+                <div class="tip-section">
+                    <p style="font-size:0.9rem; font-weight:bold; color:var(--dark);">Tip Delivery Partner 🚴</p>
+                    <div class="tip-options">
+                        <button class="tip-btn" onclick="setTip(20, this)">₹20</button>
+                        <button class="tip-btn" onclick="setTip(50, this)">₹50</button>
+                        <button class="tip-btn" onclick="setTip(100, this)">₹100</button>
+                        <button class="tip-btn" onclick="setTip(0, this)">None</button>
+                    </div>
+                </div>
+
+                <hr style="border:0; border-top:1px solid #eee;">
+                
+                <div style="display:flex; justify-content:space-between; margin:20px 0; font-size:1.4rem; font-weight:bold; color:var(--primary);">
+                    <span>Total</span>
+                    <span id="final-total">₹0</span>
+                </div>
+                
+                <button class="btn-big" onclick="goToAddress()">PROCEED TO CHECKOUT</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="address" class="page">
+        <h2 style="color: var(--primary); text-align: center;">Delivery Details</h2>
+        <div class="form-box">
+            <h3 style="text-align:center; color:#555; margin-bottom:20px;">Where should we deliver?</h3>
+            <div style="position:relative;">
+                <label style="font-size:0.8rem; color:#777; margin-bottom:5px; display:block;">Full Name</label>
+                <input type="text" id="addr-name" placeholder="e.g. Rahul Dravid">
+            </div>
+            <div style="position:relative;">
+                <label style="font-size:0.8rem; color:#777; margin-bottom:5px; display:block;">Address</label>
+                <input type="text" id="addr-street" placeholder="Street / Flat No.">
+            </div>
+            <div style="display:flex; gap:10px;">
+                <div style="flex:1;">
+                    <label style="font-size:0.8rem; color:#777; margin-bottom:5px; display:block;">City</label>
+                    <input type="text" id="addr-city" placeholder="City">
+                </div>
+                <div style="flex:1;">
+                    <label style="font-size:0.8rem; color:#777; margin-bottom:5px; display:block;">Pincode</label>
+                    <input type="number" id="addr-pin" placeholder="123456">
+                </div>
+            </div>
+            <label style="font-size:0.8rem; color:#777; margin-bottom:5px; display:block;">Phone Number</label>
+            <input type="tel" id="addr-phone" placeholder="+91 99999 99999">
+            
+            <button class="btn-big" onclick="validateAndProceed()">Confirm Address</button>
+            <button class="nav-btn" style="color: #666; margin-top: 15px; width: 100%; text-align: center; font-size:0.9rem;" onclick="show('cart')">Back to Cart</button>
+        </div>
+    </div>
+
+    <div id="payment" class="page">
+        <h2 style="color: var(--primary); text-align: center;">Secure Payment</h2>
+        <div class="form-box">
+            <h3 style="text-align:center; margin-bottom:30px;">Total Payable: <span id="pay-amount" style="color:var(--success);">₹0</span></h3>
+            
+            <label class="payment-option">
+                <input type="radio" name="paymethod" onclick="togglePay('upi')" checked>
+                <span class="payment-label">UPI (GooglePay / PhonePe)</span>
+            </label>
+            
+            <label class="payment-option">
+                <input type="radio" name="paymethod" onclick="togglePay('cod')">
+                <span class="payment-label">Cash on Delivery</span>
+            </label>
+
+            <div id="upi-box" style="text-align: center; margin-top: 20px;">
+                <div style="background: white; padding: 20px; border-radius: 15px; display: inline-block; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <img src="C:\Users\DELL\Pictures\scanner.jpeg" alt="UPI Scanner" style="width: 250px; height: auto;">
+                    <p style="margin-top: 10px; font-weight: bold; color: #555;">Scan to Pay</p>
+                </div>
+                <button class="btn-big" onclick="finishOrder()">Confirm Payment</button>
+            </div>
+
+            <div id="cod-box" style="display: none; text-align: center; margin-top: 20px;">
+                 <p style="color: #666; font-size: 1.1rem; margin-bottom: 20px;">Please pay cash directly to the delivery partner upon arrival.</p>
+                 <button class="btn-big" style="background: linear-gradient(135deg, #e67e22, #d35400);" onclick="finishOrder()">
+                    Place Order (COD)
+                 </button>
+            </div>
+
+            <button class="nav-btn" style="color: #666; margin-top: 20px; width: 100%; text-align: center; font-size:0.9rem;" onclick="show('address')">Edit Address</button>
+        </div>
+    </div>
+
+    <div id="delivery" class="page">
+        <div class="form-box" style="text-align:center; background:white;">
+            <div style="font-size: 5rem; margin-bottom: 20px;">🎉</div>
+            <h1 style="color: var(--success); font-family: 'Playfair Display'; margin-bottom: 10px;">Order Placed!</h1>
+            <p style="color: #777;">Order ID: #SH<span id="order-id"></span></p>
+            <hr style="margin: 20px 0; border-top: 1px solid #eee;">
+            
+            <div style="margin: 30px 0;">
+                <p style="font-size: 1.2rem;">Your food is being prepared.</p>
+                <p style="font-size: 1.1rem; color: #555; margin-top: 10px;">Estimated Delivery:</p>
+                <h2 style="color: var(--primary); font-size: 3rem; margin: 10px 0;">
+                    <span id="random-time">30</span> <span style="font-size: 1.5rem;">mins</span>
+                </h2>
+            </div>
+            
+            <button class="btn-add" onclick="location.reload()">Order More</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let currentTip = 0;
+
+        function show(pageId) {
+            let pages = document.getElementsByClassName('page');
+            for(let i = 0; i < pages.length; i++) {
+                pages[i].classList.remove('active');
+            }
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function showMenuSection(id) {
+            show('menu');
+            let el = document.getElementById(id);
+            if(el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function add(itemName, itemPrice) {
+            cart.push({ name: itemName, price: itemPrice });
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('count').innerText = cart.length;
+            let list = document.getElementById('cartList');
+            let total = 0;
+            
+            if(cart.length == 0) {
+                list.innerHTML = "<p style='text-align:center; padding:20px; color:#999;'>Your plate is empty. Go add some spice!</p>";
+                document.getElementById('subtotal-display').innerText = "₹0";
+                document.getElementById('final-total').innerText = "₹0";
+                document.getElementById('pay-amount').innerText = "₹0";
+                return;
+            } 
+            
+            let htmlStr = "";
+            for(let i = 0; i < cart.length; i++) {
+                total += cart[i].price;
+                htmlStr += '<div class="cart-item">';
+                htmlStr += '<div><span style="font-weight:bold; display:block;">' + cart[i].name + '</span>';
+                htmlStr += '<span style="font-size:0.9rem; color:#777;">₹' + cart[i].price + '</span></div>';
+                htmlStr += '<span class="remove-btn" onclick="removeItem(' + i + ')">✕</span></div>';
+            }
+            
+            list.innerHTML = htmlStr;
+            document.getElementById('subtotal-display').innerText = "₹" + total;
+            
+            let finalAmount = total + currentTip;
+            document.getElementById('final-total').innerText = "₹" + finalAmount;
+            document.getElementById('pay-amount').innerText = "₹" + finalAmount;
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function setTip(amount, btn) {
+            currentTip = amount;
+            let tips = document.getElementsByClassName('tip-btn');
+            for(let i = 0; i < tips.length; i++){
+                tips[i].classList.remove('selected');
+            }
+            btn.classList.add('selected');
+            updateCartUI();
+        }
+
+        function goToAddress() {
+            if(cart.length == 0) { 
+                alert("Your cart is empty!"); 
+                return; 
+            }
+            show('address');
+        }
+
+        function validateAndProceed() {
+            let n = document.getElementById('addr-name').value;
+            let s = document.getElementById('addr-street').value;
+            let p = document.getElementById('addr-phone').value;
+
+            if(n == "" || s == "" || p == "") {
+                alert("Please fill in Name, Address, and Phone.");
+            } else {
+                show('payment');
+            }
+        }
+
+        function togglePay(method) {
+            if(method == 'upi') {
+                document.getElementById('upi-box').style.display = 'block';
+                document.getElementById('cod-box').style.display = 'none';
+            } else {
+                document.getElementById('upi-box').style.display = 'none';
+                document.getElementById('cod-box').style.display = 'block';
+            }
+        }
+
+        function finishOrder() {
+            show('delivery');
+            let time = Math.floor(Math.random() * 21) + 30;
+            document.getElementById('random-time').innerText = time;
+            document.getElementById('order-id').innerText = Math.floor(1000 + Math.random() * 9000);
+            
+            cart = [];
+            currentTip = 0;
+            updateCartUI();
+        }
+    </script>
+</body>
+</html>
